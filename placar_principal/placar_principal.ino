@@ -66,6 +66,8 @@ unsigned long a_up_debounce_timer = 0;
 unsigned long a_down_debounce_timer = 0;
 unsigned long b_up_debounce_timer = 0;
 unsigned long b_down_debounce_timer = 0;
+unsigned long but_main_debounce_timer = 0;
+
 
 // INSTANCIAS DE OBJETOS
 LedControl ledMatrix = LedControl(DISP_DIN_PIN, DISP_CLK_PIN, DISP_CS_PIN, DISP_MODULES);
