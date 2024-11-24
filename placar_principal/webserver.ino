@@ -10,8 +10,15 @@ void startWebserver() {
 }
 
 void handleRoot() {
-  //String placar = "";
-  server.send(200, "text/plain", "{'a':" + String(a_score) + ",'b':" + String(b_score) + "}");   // Send HTTP status 200 (Ok) and send some text to the browser/client
+  String html = "";
+  html += "<!DOCTYPE html><html lang='pt-br'><head><meta charset='UTF-8'>";
+  html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Placar Wifi</title>";
+  html += "<style>.center{display:flex;justify-content:center;align-items:center;height: 200px;border: 3px solid green;font-size: 135px;}</style>";
+  html += "</head><body><div class='center'>";
+  html += String(a_score) + "x" + String(b_score);
+  html += "</div></body></html>";
+
+  server.send(200, "text/html", html);   // HTTP status 200 (Ok) e HTML para browser/client
   Serial.println("[WEBSERVER] '/'");
 }
 
