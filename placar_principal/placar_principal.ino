@@ -36,7 +36,7 @@ A0	ADC0	Analog Input	X
 //#include <ESP8266mDNS.h>
 //#include <FS.h>
 
-
+using namespace websockets;
 // CONSTANTES
 #define BUT_A_UP_PIN    D5
 #define BUT_A_DOWN_PIN  D6
@@ -71,10 +71,8 @@ unsigned long but_main_debounce_timer = 0;
 
 // INSTANCIAS DE OBJETOS
 LedControl ledMatrix = LedControl(DISP_DIN_PIN, DISP_CLK_PIN, DISP_CS_PIN, DISP_MODULES);
-
-//MD_MAX72XX disp = MD_MAX72XX(DISP_TYPE, DISP_CLK_PIN, DISP_DIN_PIN, DISP_CS_PIN, DISP_MODULES);
 ESP8266WebServer server(80);       // Create a webserver object that listens for HTTP request on port 80
-//WebSocketsServer webSocket(81);    // create a websocket server on port 81
+WebSocketsServer socketServer(81);    // padrao porta 81. Criar websocket server
 
 
 // SETUP ====================================================
@@ -82,10 +80,11 @@ void setup() {
   Serial.begin(115200); // inicilizar serial, apenas debug
   Serial.println("");   // pular linha no inicio
   delay(200);
-  startButtons();
+  startButtons();       // inicializar botoes
   startDisplay();       // inicializar display led matricial
   startWifi();          // inicilizar o Ponto de Acesso (AP)
   startWebserver();     // inicilizar o webserver (para responder requisicoes)
+  startWebSocket();
 }
 
 
@@ -93,6 +92,6 @@ void setup() {
 void loop() {
   checkButtons();
   updateDisplay();
-  server.handleClient(); // Listen for HTTP requests from clients
-  
+  updateWebSocket();
+  server.handleClient(); // Listen for HTTP requests from clients  
 }

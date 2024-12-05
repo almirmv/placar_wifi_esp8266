@@ -1,12 +1,33 @@
 
-/*
+
 // Iniciar o servidor de WebSocket
-void startWebSocket() { 
-  webSocket.begin();                          // start the websocket server
-  webSocket.onEvent(webSocketEvent);          // if there's an incomming websocket message, go to function 'webSocketEvent'
+void startWebSocket() {
+  socketServer.listen(81);
+  Serial.print("Is server live? ");
+  Serial.println(socketServer.available()); 
+  //webSocket.begin();                          // start the websocket server
+  //webSocket.onEvent(webSocketEvent);          // if there's an incomming websocket message, go to function 'webSocketEvent'
   Serial.println("[WebSocket server] started.");
 }
 
+// Processar comunicaçao por webSocket
+void updateWebSocket() {
+  auto client = socketServer.accept();
+  if(client.available()) {
+    auto msg = client.readBlocking();
+
+    // log
+    Serial.print("Got Message: ");
+    Serial.println(msg.data());
+
+    // return echo
+    client.send("Echo: " + msg.data());
+
+    // close the connection
+    client.close();
+  }
+}
+/*
 
 // Processar eventos de websocket
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght) {
