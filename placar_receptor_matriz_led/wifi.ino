@@ -36,15 +36,7 @@ void wifi_get_data(){
     }
     //Serial.println("[HTTP response]:");
     //Serial.println(http_response);
-    String txt_json = http_response.substring(http_response.indexOf("{") ); // separa a parte {'a':0,'b':0}
-    a_score_str = txt_json.substring(txt_json.indexOf("a':")+3, txt_json.indexOf(","));
-    b_score_str = txt_json.substring(txt_json.indexOf("b':")+3, txt_json.indexOf("}"));
-    //Serial.print("RESPONSE:");
-    //Serial.println(txt_json);
-    //Serial.print("A:");
-    //Serial.println(a_score_str);   
-    //Serial.print("B:");
-    //Serial.println(b_score_str);
+    
       
   }
 
@@ -52,9 +44,24 @@ void wifi_get_data(){
   if (millis() > refresh_http_timer) {
     // vamos atualizar o display agora para ter certeza que todos os dados ja chegaram
     //score_str fica instavel enquanto nao chegar todos os dados da request
+    String txt_json = http_response.substring(http_response.indexOf("[") ); // separa [1,2,3]
+    Serial.print("RESPONSE:");
+    Serial.println(txt_json);    
+    a_score_str = txt_json.substring(txt_json.indexOf("[")+1, txt_json.indexOf(","));
+    txt_json = txt_json.substring(txt_json.indexOf(",")+1);       // fica: 2,3]
+    b_score_str = txt_json.substring(0, txt_json.indexOf(","));   // pega 2
+    txt_json = txt_json.substring(txt_json.indexOf(",")+1);       // fica: 3]
+    sound_num_str = txt_json.substring(0, txt_json.indexOf("]")); //pega 3   
+    
+    Serial.print("A:");
+    Serial.println(a_score_str);   
+    Serial.print("B:");
+    Serial.println(b_score_str);
+    Serial.print("S:");
+    Serial.println(sound_num_str);
     a_score = a_score_str.toInt();  // converter de string para inteiro
     b_score = b_score_str.toInt();  // neste momento ja passou 1 seg. b_score_str ja deve ter o valor final
-
+    playSound();
     refresh_http_timer += 1000;   // zera contagem para proxima requisicao
     http_response = "";           // zera resposta anterior
     // encerar qualquer conexao antes de iniciar nova    

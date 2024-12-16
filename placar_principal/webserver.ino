@@ -3,7 +3,7 @@
 void startWebserver() {
   Serial.print("[WEBSERVER] iniciando...");
   server.on("/", handleRoot);                 // chama funcao 'handleRoot' quando cliente pedir URL "/"  
-  server.on("/get/placar", handleGetPLacar);  // chama funcao 'handleGetPLacar' quando cliente pedir URL "/"
+  server.on("/placar", handleGetPLacar);  // chama funcao 'handleGetPLacar' quando cliente pedir URL "/"
   server.onNotFound(handleNotFound);          // se cliente pedir URL nao listada responde com um 404
   server.begin();                             // inicia o webserver
   Serial.println("Concluido!");
@@ -23,8 +23,11 @@ void handleRoot() {
 }
 
 void handleGetPLacar() {
-  server.send(200, "application/json", "{'a':" + String(a_score) + ",'b':" + String(b_score) + "}");   // Send HTTP status 200 (Ok) and send some text to the browser/client
-  Serial.println("[WEBSERVER] '/get/placar'");
+  // Envia HTTP status 200 (Ok) e envia placar em json para o receptor
+  String json_str = "[" + String(a_score) + "," + String(b_score) + "," + String(sound_num) + "]";
+  server.send(200, "application/json", json_str);
+  sound_num = 0;  // ja enviou som, zera para nao ficar tocando no receptor
+  Serial.println("[WEBSERVER] '/placar' " + json_str);  
 }
 
 // nao encontrou o endereco...

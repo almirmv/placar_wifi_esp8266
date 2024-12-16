@@ -30,23 +30,24 @@ A0	ADC0	Analog Input	X
 #include <ESP8266WiFi.h>        // biblioteca para o WiFi
 #include <LedControl.h>         // biblioteca para o display
 //#include <MD_MAX72xx.h>       // biblioteca para o display
-#include <ArduinoWebsockets.h>  // biblioteca para conexoes websocket
+//#include <ArduinoWebsockets.h>  // biblioteca para conexoes websocket
 #include <ESP8266WebServer.h>   // biblioteca para servidor http
 
 //#include <ESP8266mDNS.h>
 //#include <FS.h>
 
-using namespace websockets;
+//using namespace websockets;
 // CONSTANTES
-#define BUT_A_UP_PIN    D5
-#define BUT_A_DOWN_PIN  D6
-#define BUT_B_UP_PIN    D7
-#define BUT_B_DOWN_PIN  D8
-#define BUZZER_PIN      D3  // pino conectado ao buzzer
+#define BUZZER_PIN      D0  // pino conectado ao buzzer
 #define BUT_MAIN_PIN    D4  // pino para alternar placar ou zerar
+#define BUT_A_UP_PIN    D5  // pino para aumentar placar A
+#define BUT_A_DOWN_PIN  D6  // pino para diminuir placar A
+#define BUT_B_UP_PIN    D7  // pino para aumentar placar B
+#define BUT_B_DOWN_PIN  D8  // pino para diminuir placar B
+
 #define DISP_CLK_PIN    D1  // pino de clock do display
 #define DISP_DIN_PIN    D2  // pino de entrada de dados (Data In)
-#define DISP_CS_PIN     D0  // pino de seleçao de display (Chip Select)
+#define DISP_CS_PIN     D3  // pino de seleçao de display (Chip Select) D0
 
 #define DEBOUNCE_TIME   30  // 30ms de debounce dos botoes
 #define DISP_MODULES    4   // numero de matrizes de LED do display
@@ -55,11 +56,12 @@ const char *ssid = "Placar WiFi";         // Nome da rede WiFi que sera criada
 const char *password = "thereisnospoon";  // Senha da rede, deixar em branco para acesso sem senha
 
 // VARIAVEIS
-byte zero = B00000000;
+//byte zero = B00000000;
 byte dig0 = 0x0;
 byte dig1 = 0x0;
 byte dig2 = 0x0;
 byte dig3 = 0x0;
+byte sound_num = 0;   // aponta para qual som deve ser tocado no receptor
 int a_score = 0;
 int b_score = 0;
 unsigned long a_up_debounce_timer = 0;
@@ -72,7 +74,7 @@ unsigned long but_main_debounce_timer = 0;
 // INSTANCIAS DE OBJETOS
 LedControl ledMatrix = LedControl(DISP_DIN_PIN, DISP_CLK_PIN, DISP_CS_PIN, DISP_MODULES);
 ESP8266WebServer server(80);       // Create a webserver object that listens for HTTP request on port 80
-WebSocketsServer socketServer(81);    // padrao porta 81. Criar websocket server
+//WebSocketsServer socketServer(81);    // padrao porta 81. Criar websocket server
 
 
 // SETUP ====================================================
@@ -84,7 +86,7 @@ void setup() {
   startDisplay();       // inicializar display led matricial
   startWifi();          // inicilizar o Ponto de Acesso (AP)
   startWebserver();     // inicilizar o webserver (para responder requisicoes)
-  startWebSocket();
+  //startWebSocket();
 }
 
 
@@ -92,6 +94,6 @@ void setup() {
 void loop() {
   checkButtons();
   updateDisplay();
-  updateWebSocket();
+  //updateWebSocket();
   server.handleClient(); // Listen for HTTP requests from clients  
 }

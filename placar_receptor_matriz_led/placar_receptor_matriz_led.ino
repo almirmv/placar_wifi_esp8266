@@ -16,9 +16,10 @@ HARDWARE:
 
 
 //CONSTANTES
+#define BUZZER_PIN      D0  // pino conectado ao buzzer
 #define DISP_CLK_PIN    D1    // pino de clock do display
 #define DISP_DIN_PIN    D2    // pino de entrada de dados (Data In)
-#define DISP_CS_PIN     D0    // pino de seleçao de display (Chip Select)
+#define DISP_CS_PIN     D3    // pino de seleçao de display (Chip Select)
 #define DISP_MODULES    4     // numero de matrizes de LED do display
 #define INTERVAL        3000  // Intervalo entre atualizaçoes de placar e tela (em ms)
 #define STASSID         "Placar WiFi"     // SSID do placar principal
@@ -27,7 +28,7 @@ HARDWARE:
 const char* ssid = STASSID;
 const char* password = STAPSK;
 const char* host = "192.168.4.1"; // 192.168.4.1 (this is the default IP address of our ESP AP)
-String url = "/get/placar";
+String url = "/placar";
 
 //VARIAVEIS
 byte dig0 = 0x0;
@@ -37,8 +38,9 @@ byte dig3 = 0x0;
 int a_score = 0;
 int b_score = 0;
 String http_response = "";
-String a_score_str = "";    // valor de a durante a requisicao. Pode mudar no meioa da requisicao
+String a_score_str = "";    // valor de a durante a requisicao. Pode mudar no meio da requisicao
 String b_score_str = "";
+String sound_num_str = "";
 unsigned long refresh_disp_timer = millis();
 unsigned long refresh_http_timer = millis();
 
