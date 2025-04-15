@@ -1,2 +1,9 @@
 # placar_wifi_esp8266
- Placar para contagems de pontuação de jogos. Princicpal  mostrador com led, baseado em ESS8266. Recptor, opcional, esp8266 com 0.96 OLED
+ Placar para contagem de pontuação de jogos.
+
+ Placar "Princicpal" possui Display de Matriz de LED (max7219) e microcontrolador ESP8266.
+ Pode ser acessado por celular através do wifi. "http://192.168.4.1"
+
+ Placar "Recptor", opcional, possui ESP8266 e duas opções de DISPLAY:
+  - Tela 0.96 polegadas SD1306 de OLED.
+  - Display de Matriz de LED (max7219) https://github.com/MajicDesigns/MD_MAX72XX
