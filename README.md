@@ -9,4 +9,4 @@
   - Display de Matriz de LED (max7219) https://github.com/MajicDesigns/MD_MAX72XX
 
   Display inferior é o Principal. O display Superior é um receptor que faz o espelhamento do placar principal.
-![Foto com dois displays max7219, Principal e Receptor](https://github.com/almirmv/placar_wifi_esp8266/principal_e_receptor.png)
+![Foto com dois displays max7219, Principal e Receptor](https://github.com/almirmv/placar_wifi_esp8266/blob/main/principal_e_receptor.png)
